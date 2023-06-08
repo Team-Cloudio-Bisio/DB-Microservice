@@ -39,17 +39,7 @@ namespace DBMicroservice.Controllers {
             else
                 return StatusCode(401, "Insert unsuccesful");
         }
-        
-        [HttpPost("login", Name = "LoginUser")]
-        public async Task<IActionResult> Login(User user) {
-            bool res = await _context.LoginUser(user);
 
-            if (res == true)
-                return StatusCode(200, "Login succesful!");
-            else
-                return StatusCode(401, "Login unsuccesful");
-        }
-        
         [HttpDelete("delete", Name = "DeleteUser")]
         public async Task<IActionResult> Delete(string username) {
             int res = await _context.DeleteUser(username);
