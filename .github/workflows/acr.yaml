@@ -25,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ secrets.ACT_ENDPOINT }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ secrets.ACR_ENDPOINT }}/${{ env.IMAGE_NAME }}:latest
