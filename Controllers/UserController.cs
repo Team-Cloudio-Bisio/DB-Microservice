@@ -15,9 +15,11 @@ namespace DBMicroservice.Controllers {
     public class UserController : ControllerBase {
         
         private readonly DBMicroservice.Configuration.IConfiguration _configuration;
+        private readonly ILogger<UserController> _logger;
         private DBUserContext _context;
 
-        public UserController(DBMicroservice.Configuration.IConfiguration configuration) {
+        public UserController(DBMicroservice.Configuration.IConfiguration configuration, ILogger<UserController> logger) {
+            _logger = logger;
             _configuration = configuration;
 
             _context = new DBUserContext(_configuration.GetDBConnectionString());
@@ -26,6 +28,8 @@ namespace DBMicroservice.Controllers {
         [HttpGet("get", Name = "GetUser")]
         public async Task<IEnumerable<User>> Get() {
             List<User> res = await _context.GetUsers();
+            
+            _logger.Log(LogLevel.Warning, _configuration.GetDBConnectionString());
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbmicroservice
+  labels:
+    app: dbmicroservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbmicroservice
+  template:
+    metadata:
+      labels:
+        app: dbmicroservice
+    spec:
+      containers:
+      - name: dbmicroservice-container
+        image: federicoand98/db-microservice:latest
+        imagePullPolocy: IfNotPresent
+        ports:
+        - containerPort: 80
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Release
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "0.1"
+          limits:
+            memory: "128Mi"
+            cpu: "0.3"
