@@ -17,12 +17,12 @@ spec:
       containers:
       - name: dbmicroservice-container
         image: federicoand98/db-microservice:latest
-        imagePullPolocy: IfNotPresent
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
         env:
           - name: ASPNETCORE_ENVIRONMENT
-            value: Release
+            value: Development
         resources:
           requests:
             memory: "64Mi"

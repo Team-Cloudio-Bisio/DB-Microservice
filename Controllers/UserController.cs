@@ -23,13 +23,15 @@ namespace DBMicroservice.Controllers {
             _configuration = configuration;
 
             _context = new DBUserContext(_configuration.GetDBConnectionString());
+            
+            _logger.Log(LogLevel.Warning, _configuration.GetDBConnectionString());
+            
+            _logger.Log(LogLevel.Trace, Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
         }
 
         [HttpGet("get", Name = "GetUser")]
         public async Task<IEnumerable<User>> Get() {
             List<User> res = await _context.GetUsers();
-            
-            _logger.Log(LogLevel.Warning, _configuration.GetDBConnectionString());
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
