@@ -34,3 +34,7 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "0.3"
+      volumes:
+      - name: secrets
+        secret:
+          secretName: secret-appsettings

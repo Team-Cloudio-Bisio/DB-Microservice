@@ -24,7 +24,7 @@ namespace DBMicroservice.Controllers {
 
             string connstring = configuration["Database:ConnectionString"];
 
-            _context = new DBServerContext(_ourConfiguration.GetDBConnectionString());
+            _context = new DBServerContext(connstring);
         }
         
         [HttpGet("", Name = "GetServers")]

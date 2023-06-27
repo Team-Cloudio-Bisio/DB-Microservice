@@ -14,15 +14,19 @@ namespace DBMicroservice.Controllers {
     [Route("[controller]")]
     public class UserController : ControllerBase {
         
-        private readonly DBMicroservice.Configuration.IOurConfiguration _ourConfiguration;
+        private readonly IOurConfiguration _ourConfiguration;
         private readonly ILogger<UserController> _logger;
         private DBUserContext _context;
 
-        public UserController(DBMicroservice.Configuration.IOurConfiguration ourConfiguration, ILogger<UserController> logger) {
+        public UserController(IOurConfiguration ourConfiguration, ILogger<UserController> logger, IConfiguration configuration) {
             _logger = logger;
             _ourConfiguration = ourConfiguration;
 
-            _context = new DBUserContext(_ourConfiguration.GetDBConnectionString());
+            string connstring = configuration["Database:ConnectionString"];
+            
+            _logger.Log(LogLevel.Warning, connstring);
+            
+            _context = new DBUserContext(connstring);
         }
 
         [HttpGet("", Name = "GetUser")]
