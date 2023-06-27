@@ -25,7 +25,7 @@ namespace DBMicroservice.Controllers {
             _context = new DBUserContext(_configuration.GetDBConnectionString());
         }
 
-        [HttpGet("get", Name = "GetUser")]
+        [HttpGet("", Name = "GetUser")]
         public async Task<IEnumerable<User>> Get() {
             List<User> res = await _context.GetUsers();
             _logger.Log(LogLevel.Warning, "gianni");
@@ -33,7 +33,7 @@ namespace DBMicroservice.Controllers {
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
         
-        [HttpPost("insert", Name = "InsertUser")]
+        [HttpPost("", Name = "InsertUser")]
         public async Task<IActionResult> Insert(User user) {
             int res = await _context.InsertUser(user);
 
@@ -43,7 +43,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Insert unsuccesful");
         }
 
-        [HttpDelete("delete", Name = "DeleteUser")]
+        [HttpDelete("", Name = "DeleteUser")]
         public async Task<IActionResult> Delete(string username) {
             int res = await _context.DeleteUser(username);
 
@@ -53,7 +53,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Delete unsuccesful");
         }
         
-        [HttpPatch("patch", Name = "PatchUser")]
+        [HttpPatch("", Name = "PatchUser")]
         public async Task<IActionResult> Patch(User user) {
             int res = await _context.PatchUser(user);
 

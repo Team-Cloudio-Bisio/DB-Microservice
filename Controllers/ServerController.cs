@@ -23,36 +23,36 @@ namespace DBMicroservice.Controllers {
 
             _context = new DBServerContext(_configuration.GetDBConnectionString());
         }
-
-        [HttpGet("getServers", Name = "GetServers")]
+        
+        [HttpGet("", Name = "GetServers")]
         public async Task<IEnumerable<Server>> GetServers() {
             List<Server> res = await _context.GetServers();
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
 
-        [HttpGet("getWhitelist", Name = "GetWhitelist")]
+        [HttpGet("{serverName}/whitelist", Name = "GetWhitelist")]
         public async Task<IEnumerable<User>> GetWhitelist(string serverName) {
             List<User> res = await _context.GetServerWhitelist(serverName);
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
 
-        [HttpGet("getAdmin", Name = "GetAdmin")]
+        [HttpGet("{serverName}/admin", Name = "GetAdmin")]
         public async Task<IEnumerable<User>> GetAdmin(string serverName) {
             List<User> res = await _context.GetServerAdmins(serverName);
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
 
-        [HttpGet("getServerSettings", Name = "GetServerSettings")]
+        [HttpGet("{serverName}/settings", Name = "GetServerSettings")]
         public async Task<ServerSettings> GetServerSettings(string serverName) {
             ServerSettings res = await _context.GetServerSettings(serverName);
 
             return res;
         }
 
-        [HttpPost("insertServer", Name = "InsertServer")]
+        [HttpPost("", Name = "InsertServer")]
         public async Task<IActionResult> InsertServer(Server server) {
             int res = await _context.InsertServer(server);
 
@@ -62,7 +62,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Insert unsuccesful");
         }
 
-        [HttpPost("insertAdmin", Name = "InsertAdmin")]
+        [HttpPost("admin", Name = "InsertAdmin")]
         public async Task<IActionResult> InsertAdmin(string username, string serverName) {
             int res = await _context.InsertServerAdmin(username, serverName);
 
@@ -72,7 +72,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Insert unsuccesful");
         }
 
-        [HttpPost("insertWhitelist", Name = "InsertWhitelist")]
+        [HttpPost("whitelist", Name = "InsertWhitelist")]
         public async Task<IActionResult> InsertWhitelist(string username, string serverName) {
             int res = await _context.InsertServerWhitelist(username, serverName);
 
@@ -82,7 +82,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Insert unsuccesful");
         }
 
-        [HttpPost("insertSettings", Name = "InsertSettings")]
+        [HttpPost("settings", Name = "InsertSettings")]
         public async Task<IActionResult> InsertSettings(string serverName, ServerSettings settings) {
             int res = await _context.InsertServerSettings(serverName, settings);
 
@@ -92,7 +92,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Insert unsuccesful");
         }
 
-        [HttpDelete("deleteServer", Name = "DeleteServer")]
+        [HttpDelete("", Name = "DeleteServer")]
         public async Task<IActionResult> DeleteServer(string serverName) {
             int res = await _context.DeleteServer(serverName);
 
@@ -102,7 +102,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Delete unsuccesful");
         }
 
-        [HttpDelete("deleteAdmin", Name = "DeleteAdmin")]
+        [HttpDelete("admin", Name = "DeleteAdmin")]
         public async Task<IActionResult> DeleteAdmin(string username, string serverName) {
             int res = await _context.DeleteServerAdmin(username, serverName);
 
@@ -112,7 +112,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Delete unsuccesful");
         }
 
-        [HttpDelete("deleteWhitelist", Name = "DeleteWhitelist")]
+        [HttpDelete("whitelist", Name = "DeleteWhitelist")]
         public async Task<IActionResult> DeleteWhitelist(string username, string serverName) {
             int res = await _context.DeleteServerWhitelist(username, serverName);
 
@@ -122,7 +122,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Delete unsuccesful");
         }
 
-        [HttpPatch("patchServer", Name = "PatchServer")]
+        [HttpPatch("", Name = "PatchServer")]
         public async Task<IActionResult> PatchServer(Server server) {
             int res = await _context.PatchServer(server);
 
@@ -132,7 +132,7 @@ namespace DBMicroservice.Controllers {
                 return StatusCode(401, "Patch unsuccesful");
         }
 
-        [HttpPatch("patchSettings", Name = "PatchSettings")]
+        [HttpPatch("settings", Name = "PatchSettings")]
         public async Task<IActionResult> PatchSettings(string serverName, ServerSettings settings) {
             int res = await _context.PatchServerSettings(serverName, settings);
 
