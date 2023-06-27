@@ -23,6 +23,10 @@ spec:
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: Development
+        volumeMounts:
+          - name: secrets
+            mountPath: /app/secrets
+            readOnly: true
         resources:
           requests:
             memory: "64Mi"

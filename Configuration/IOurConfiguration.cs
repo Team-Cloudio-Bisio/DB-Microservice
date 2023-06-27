@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 namespace DBMicroservice.Configuration {
-    public interface IConfiguration {
+    public interface IOurConfiguration {
         string GetDBConnectionString();
     }
 }

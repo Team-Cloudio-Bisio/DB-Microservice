@@ -5,12 +5,16 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 
 namespace DBMicroservice.Configuration {
-    public class Configuration : IConfiguration {
+    public class OurConfiguration : IOurConfiguration {
 
         private string DBConnString;
 
-        public Configuration() {
+        public OurConfiguration() {
             LoadDBConnectionString().Wait();
+        }
+
+        public OurConfiguration(string dbConnString) {
+            DBConnString = dbConnString;
         }
 
         private async Task LoadDBConnectionString() {
@@ -20,15 +24,15 @@ namespace DBMicroservice.Configuration {
             string connectionString;
 
             if (IsRunningOnAzure()) {
-                var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
-                var secret = await client.GetSecretAsync(secretName);
-                connectionString = secret.Value.Value;
+                // var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
+                // var secret = await client.GetSecretAsync(secretName);
+                // connectionString = secret.Value.Value;
             }
             else {
                 connectionString = "connectionString";
             }
 
-            DBConnString = connectionString;
+            //DBConnString = connectionString;
         }
         
         private bool IsRunningOnAzure() {

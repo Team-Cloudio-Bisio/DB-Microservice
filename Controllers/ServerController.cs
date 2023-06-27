@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using DBMicroservice.Configuration;
 using DBMicroservice.Data;
 using DBMicroservice.Model;
@@ -15,13 +16,15 @@ namespace DBMicroservice.Controllers {
     [Route("[controller]")]
     public class ServerController : ControllerBase {
 
-        private readonly DBMicroservice.Configuration.IConfiguration _configuration;
+        private readonly IOurConfiguration _ourConfiguration;
         private DBServerContext _context;
 
-        public ServerController(DBMicroservice.Configuration.IConfiguration configuration) {
-            _configuration = configuration;
+        public ServerController(IOurConfiguration ourConfiguration, IConfiguration configuration) {
+            _ourConfiguration = ourConfiguration;
 
-            _context = new DBServerContext(_configuration.GetDBConnectionString());
+            string connstring = configuration["Database:ConnectionString"];
+
+            _context = new DBServerContext(_ourConfiguration.GetDBConnectionString());
         }
         
         [HttpGet("", Name = "GetServers")]
