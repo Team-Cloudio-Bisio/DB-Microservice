@@ -28,7 +28,7 @@ namespace DBMicroservice.Controllers {
             
             _logger.Log(LogLevel.Information, connstring);
             
-            //_context = new DBUserContext(connstring);
+            _context = new DBUserContext(connstring);
         }
 
         [HttpGet("", Name = "GetUser")]

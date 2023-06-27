@@ -30,7 +30,7 @@ namespace DBMicroservice.Controllers {
             
             _logger.Log(LogLevel.Information, connstring);
 
-            //_context = new DBServerContext(connstring);
+            _context = new DBServerContext(connstring);
         }
         
         [HttpGet("", Name = "GetServers")]
