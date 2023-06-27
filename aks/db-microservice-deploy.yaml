@@ -23,10 +23,11 @@ spec:
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: Development
-        volumeMounts:
-          - name: secrets
-            mountPath: /app/secrets
-            readOnly: true
+          - name: ConnectionStrings__DefaultConnection
+            valueFrom:
+              secretKeyRef:
+                name: cspasswd
+                key: CS_DefaultConnection
         resources:
           requests:
             memory: "64Mi"
@@ -34,7 +35,3 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "0.3"
-      volumes:
-      - name: secrets
-        secret:
-          secretName: secret-appsettings
