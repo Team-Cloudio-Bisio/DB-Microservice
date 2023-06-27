@@ -17,12 +17,14 @@ namespace DBMicroservice.Controllers {
     public class ServerController : ControllerBase {
 
         private readonly IOurConfiguration _ourConfiguration;
+        private readonly IConfiguration _configuration;
         private DBServerContext _context;
 
         public ServerController(IOurConfiguration ourConfiguration, IConfiguration configuration) {
             _ourConfiguration = ourConfiguration;
+            _configuration = configuration;
 
-            string connstring = configuration["Database:ConnectionString"];
+            string connstring = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
 
             _context = new DBServerContext(connstring);
         }

@@ -16,13 +16,15 @@ namespace DBMicroservice.Controllers {
         
         private readonly IOurConfiguration _ourConfiguration;
         private readonly ILogger<UserController> _logger;
+        private readonly IConfiguration _configuration;
         private DBUserContext _context;
 
         public UserController(IOurConfiguration ourConfiguration, ILogger<UserController> logger, IConfiguration configuration) {
+            _configuration = configuration;
             _logger = logger;
             _ourConfiguration = ourConfiguration;
 
-            string connstring = configuration["Database:ConnectionString"];
+            string connstring = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
             
             _logger.Log(LogLevel.Warning, connstring);
             
