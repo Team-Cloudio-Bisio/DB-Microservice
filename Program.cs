@@ -13,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IOurConfiguration, OurConfiguration>();
 
+builder.Configuration.AddJsonFile("secrets/appsettings.secrets.json", optional: true);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
