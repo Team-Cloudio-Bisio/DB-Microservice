@@ -16,13 +16,11 @@ namespace DBMicroservice.Controllers {
     [Route("[controller]")]
     public class ServerController : ControllerBase {
 
-        private readonly IOurConfiguration _ourConfiguration;
         private readonly IConfiguration _configuration;
         private readonly ILogger<ServerController> _logger;
         private DBServerContext _context;
 
-        public ServerController(ILogger<ServerController> logger, IOurConfiguration ourConfiguration, IConfiguration configuration) {
-            _ourConfiguration = ourConfiguration;
+        public ServerController(ILogger<ServerController> logger, IConfiguration configuration) {
             _configuration = configuration;
             _logger = logger;
             

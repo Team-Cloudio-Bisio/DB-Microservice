@@ -14,15 +14,13 @@ namespace DBMicroservice.Controllers {
     [Route("[controller]")]
     public class UserController : ControllerBase {
         
-        private readonly IOurConfiguration _ourConfiguration;
         private readonly ILogger<UserController> _logger;
         private readonly IConfiguration _configuration;
         private DBUserContext _context;
 
-        public UserController(IOurConfiguration ourConfiguration, ILogger<UserController> logger, IConfiguration configuration) {
+        public UserController(ILogger<UserController> logger, IConfiguration configuration) {
             _configuration = configuration;
             _logger = logger;
-            _ourConfiguration = ourConfiguration;
             
             logger.Log(LogLevel.Information, "Started User Controller");
 
