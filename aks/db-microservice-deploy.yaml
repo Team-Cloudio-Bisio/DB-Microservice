@@ -17,12 +17,12 @@ spec:
       containers:
       - name: dbmicroservice-container
         image: federicoand98/db-microservice:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         env:
           - name: ASPNETCORE_ENVIRONMENT
-            value: Development
+            value: Release
           - name: ConnectionStrings__DefaultConnection
             valueFrom:
               secretKeyRef:
