@@ -18,15 +18,21 @@ namespace DBMicroservice.Controllers {
 
         private readonly IOurConfiguration _ourConfiguration;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<ServerController> _logger;
         private DBServerContext _context;
 
-        public ServerController(IOurConfiguration ourConfiguration, IConfiguration configuration) {
+        public ServerController(ILogger<ServerController> logger, IOurConfiguration ourConfiguration, IConfiguration configuration) {
             _ourConfiguration = ourConfiguration;
             _configuration = configuration;
+            _logger = logger;
+            
+            _logger.Log(LogLevel.Information, "Started Server Controller");
 
             string connstring = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
+            
+            _logger.Log(LogLevel.Information, connstring);
 
-            _context = new DBServerContext(connstring);
+            //_context = new DBServerContext(connstring);
         }
         
         [HttpGet("", Name = "GetServers")]

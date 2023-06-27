@@ -23,12 +23,14 @@ namespace DBMicroservice.Controllers {
             _configuration = configuration;
             _logger = logger;
             _ourConfiguration = ourConfiguration;
+            
+            logger.Log(LogLevel.Information, "Started User Controller");
 
             string connstring = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
             
-            _logger.Log(LogLevel.Warning, connstring);
+            _logger.Log(LogLevel.Information, connstring);
             
-            _context = new DBUserContext(connstring);
+            //_context = new DBUserContext(connstring);
         }
 
         [HttpGet("", Name = "GetUser")]
