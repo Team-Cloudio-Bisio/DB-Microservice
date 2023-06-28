@@ -33,8 +33,10 @@ namespace DBMicroservice.Controllers {
 
         [HttpGet("", Name = "GetUser")]
         public async Task<IEnumerable<User>> Get() {
+            _logger.Log(LogLevel.Error, "gianni");
+            _logger.Log(LogLevel.Error, _configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));
+            
             List<User> res = await _context.GetUsers();
-            _logger.Log(LogLevel.Warning, "gianni");
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
