@@ -28,7 +28,19 @@ namespace DBMicroservice.Controllers {
             
             _logger.Log(LogLevel.Information, connstring);
             
-            _context = new DBUserContext(connstring);
+            //_context = new DBUserContext(connstring);
+        }
+
+        [HttpGet("test", Name = "Test")]
+        public IEnumerable<User> Test() {
+            _logger.Log(LogLevel.Error, "gianni");
+            _logger.Log(LogLevel.Error, _configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));
+
+            return Enumerable.Range(1, 5).Select(index =>
+                new User {
+                    username = "Marco",
+                    userPassword = "pass"
+                }).ToArray();
         }
 
         [HttpGet("", Name = "GetUser")]
