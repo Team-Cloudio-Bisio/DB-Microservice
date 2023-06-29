@@ -26,7 +26,7 @@ namespace DBMicroservice.Controllers {
 
             string connstring = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
             
-            //_context = new DBUserContext(connstring);
+            _context = new DBUserContext(connstring);
         }
 
         [HttpGet("test", Name = "Test")]
