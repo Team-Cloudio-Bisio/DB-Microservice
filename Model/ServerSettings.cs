@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 
 namespace DBMicroservice.Model {
     public enum Difficulty {
@@ -19,8 +20,7 @@ namespace DBMicroservice.Model {
 
         // create with preset settings
         public ServerSettings() {
-            Random rnd = new Random();
-            seed = rnd.Next();
+            seed = RandomNumberGenerator.GetInt32(Int32.MaxValue);
             maxPlayers = 4;
             difficulty = Difficulty.easy;
             gamemode = Gamemode.survival;
