@@ -77,6 +77,17 @@ namespace DBMicroservice.Controllers {
             int res = await _context.InsertServer(server);
 
             if (res == 1)
+                res = await _context.PatchServerSettings(server.serverName, server.settings);
+            if (res == 1)
+                foreach (string user in server.whitelist) {
+                    await _context.InsertServerWhitelist(user, server.serverName);
+                }
+            if (res == 1)
+                foreach (User user in server.admin) {
+                    await _context.InsertServerAdmin(user.username, server.serverName);
+                }
+
+            if (res == 1)
                 return StatusCode(200, "Insert succesful!");
             else
                 return StatusCode(401, "Insert unsuccesful");

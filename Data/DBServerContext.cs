@@ -38,7 +38,11 @@ namespace DBMicroservice.Data {
         public async Task<List<Server>> GetServers(string username) {
             List<Server> servers = new List<Server>();
             
-            string query = "SELECT * FROM myServer WHERE username = @username";
+            string query = @"SELECT s.serverName, s.ip, s.containerID, s.settingsID
+                                FROM myServer s
+                                JOIN myServerAdmin sa ON sa.serverName = s.serverName
+                                WHERE sa.username = @username";
+            
             using (SqlCommand command = new SqlCommand(query, _connection.GetConnection())) {
                 command.Parameters.AddWithValue("@username", username);
                 
