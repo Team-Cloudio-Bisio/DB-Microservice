@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 automountServiceAccountToken: false
-allowPrivilegeEscalation: false
 metadata:
   name: dbmicroservice
   labels:
@@ -22,6 +21,7 @@ spec:
         securityContext:
           readOnlyRootFilesystem: true
           runAsNonRoot: true
+          allowPrivilegeEscalation: false
         imagePullPolicy: Always
         ports:
         - containerPort: 80
