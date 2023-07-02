@@ -37,6 +37,19 @@ namespace DBMicroservice.Controllers {
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
+        
+        [HttpGet("byUser", Name = "GetServersUser")]
+        public async Task<IEnumerable<Server>> GetServers(string username) {
+            List<Server> res = await _context.GetServers(username);
+
+            foreach (Server s in res) {
+                s.settings = await _context.GetServerSettings(s.settingsID.Value);
+                s.admin = await _context.GetServerAdmins(s.serverName);
+                s.whitelist = await _context.GetServerWhitelist(s.serverName);
+            }
+
+            return Enumerable.Range(0, res.Count).Select(i => res[i]);
+        }
 
         [HttpGet("{serverName}/whitelist", Name = "GetWhitelist")]
         public async Task<IEnumerable<string>> GetWhitelist(string serverName) {
