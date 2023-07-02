@@ -27,8 +27,6 @@ namespace DBMicroservice.Controllers {
             _logger.Log(LogLevel.Information, "Started Server Controller");
 
             string connstring = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
-            
-            _logger.Log(LogLevel.Information, connstring);
 
             _context = new DBServerContext(connstring);
         }
@@ -41,8 +39,8 @@ namespace DBMicroservice.Controllers {
         }
 
         [HttpGet("{serverName}/whitelist", Name = "GetWhitelist")]
-        public async Task<IEnumerable<User>> GetWhitelist(string serverName) {
-            List<User> res = await _context.GetServerWhitelist(serverName);
+        public async Task<IEnumerable<string>> GetWhitelist(string serverName) {
+            List<string> res = await _context.GetServerWhitelist(serverName);
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }

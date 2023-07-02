@@ -159,8 +159,8 @@ namespace DBMicroservice.Data {
             return rowsAffected;
         }
         
-        public async Task<List<User>> GetServerWhitelist(string serverName) {
-            List<User> whitelist = new List<User>();
+        public async Task<List<string>> GetServerWhitelist(string serverName) {
+            List<string> whitelist = new List<string>();
             
             string query = "SELECT username FROM myServerWhitelist WHERE serverName = @ServerName";
             using (SqlCommand command = new SqlCommand(query, _connection.GetConnection())) {
@@ -168,7 +168,7 @@ namespace DBMicroservice.Data {
                 
                 using (SqlDataReader reader = await command.ExecuteReaderAsync()) {
                     while (await reader.ReadAsync()) {
-                        whitelist.Add(new User {username = reader.GetString(0)});
+                        whitelist.Add(reader.GetString(0));
                     }
                 }
             }
