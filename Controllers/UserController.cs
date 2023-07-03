@@ -29,23 +29,8 @@ namespace DBMicroservice.Controllers {
             _context = new DBUserContext(connstring);
         }
 
-        [HttpGet("test", Name = "Test")]
-        public IEnumerable<User> Test() {
-            _logger.Log(LogLevel.Error, "gianni");
-            _logger.Log(LogLevel.Error, _configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));
-
-            return Enumerable.Range(1, 5).Select(index =>
-                new User {
-                    username = "Marco",
-                    userPassword = "pass"
-                }).ToArray();
-        }
-
         [HttpGet("", Name = "GetUser")]
         public async Task<IEnumerable<User>> Get() {
-            _logger.Log(LogLevel.Error, "gianni");
-            _logger.Log(LogLevel.Error, _configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));
-            
             List<User> res = await _context.GetUsers();
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);

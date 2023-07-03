@@ -18,7 +18,7 @@ namespace DBMicroservice.Model {
     
         public List<User> admin { get; set; }
 
-        public List<User> whitelist { get; set; }
+        public List<string> whitelist { get; set; }
 
     }
 }

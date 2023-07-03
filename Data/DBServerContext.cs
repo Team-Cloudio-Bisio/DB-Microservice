@@ -13,12 +13,39 @@ namespace DBMicroservice.Data {
         public DBServerContext(string connectionString) {
             _connection = new DBConnectionUtils(connectionString);
         }
-
+        
         public async Task<List<Server>> GetServers() {
             List<Server> servers = new List<Server>();
             
             string query = "SELECT * FROM myServer";
             using (SqlCommand command = new SqlCommand(query, _connection.GetConnection())) {
+                using (SqlDataReader reader = await command.ExecuteReaderAsync()) {
+                    while (await reader.ReadAsync()) {
+                        servers.Add(new Server {
+                            serverName = reader.GetString(0), ip = reader.GetString(1),
+                            containerID = reader.GetString(2),
+                            settingsID = reader.IsDBNull(3) ? null : reader.GetGuid(3)
+                        });
+                    }
+                }
+            }
+            
+            _connection.CloseConnection();
+
+            return servers;
+        }
+
+        public async Task<List<Server>> GetServers(string username) {
+            List<Server> servers = new List<Server>();
+            
+            string query = @"SELECT s.serverName, s.ip, s.containerID, s.settingsID
+                                FROM myServer s
+                                JOIN myServerAdmin sa ON sa.serverName = s.serverName
+                                WHERE sa.username = @username";
+            
+            using (SqlCommand command = new SqlCommand(query, _connection.GetConnection())) {
+                command.Parameters.AddWithValue("@username", username);
+                
                 using (SqlDataReader reader = await command.ExecuteReaderAsync()) {
                     while (await reader.ReadAsync()) {
                         servers.Add(new Server {
@@ -159,8 +186,8 @@ namespace DBMicroservice.Data {
             return rowsAffected;
         }
         
-        public async Task<List<User>> GetServerWhitelist(string serverName) {
-            List<User> whitelist = new List<User>();
+        public async Task<List<string>> GetServerWhitelist(string serverName) {
+            List<string> whitelist = new List<string>();
             
             string query = "SELECT username FROM myServerWhitelist WHERE serverName = @ServerName";
             using (SqlCommand command = new SqlCommand(query, _connection.GetConnection())) {
@@ -168,7 +195,7 @@ namespace DBMicroservice.Data {
                 
                 using (SqlDataReader reader = await command.ExecuteReaderAsync()) {
                     while (await reader.ReadAsync()) {
-                        whitelist.Add(new User {username = reader.GetString(0)});
+                        whitelist.Add(reader.GetString(0));
                     }
                 }
             }
@@ -206,6 +233,33 @@ namespace DBMicroservice.Data {
             
             _connection.CloseConnection();
             return rowsAffected;
+        }
+        
+        public async Task<ServerSettings> GetServerSettings(Guid settID) {
+            ServerSettings settings = null;
+            
+            SqlConnection connection = _connection.GetConnection();
+
+            string query = "SELECT * FROM myServerSettings WHERE settingsID = @SettingsID";
+            using (SqlCommand command = new SqlCommand(query, connection)) {
+                command.Parameters.AddWithValue("@SettingsID", settID);
+            
+                using (SqlDataReader reader = await command.ExecuteReaderAsync()) {
+                    while (await reader.ReadAsync()) {
+                        settings = new ServerSettings {
+                            settingsID = reader.GetGuid(0),
+                            seed = reader.GetInt32(1),
+                            maxPlayers = reader.GetInt32(2),
+                            difficulty = (Difficulty) Enum.Parse(typeof(Difficulty), reader.GetString(3), true),
+                            gamemode = (Gamemode) Enum.Parse(typeof(Gamemode), reader.GetString(4), true)
+                        };
+                    }
+                }
+            }
+
+            _connection.CloseConnection();
+
+            return settings;
         }
 
         public async Task<ServerSettings> GetServerSettings(string serverName) {

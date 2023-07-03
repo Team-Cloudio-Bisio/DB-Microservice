@@ -27,8 +27,6 @@ namespace DBMicroservice.Controllers {
             _logger.Log(LogLevel.Information, "Started Server Controller");
 
             string connstring = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
-            
-            _logger.Log(LogLevel.Information, connstring);
 
             _context = new DBServerContext(connstring);
         }
@@ -39,10 +37,23 @@ namespace DBMicroservice.Controllers {
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
+        
+        [HttpGet("byUser", Name = "GetServersUser")]
+        public async Task<IEnumerable<Server>> GetServers(string username) {
+            List<Server> res = await _context.GetServers(username);
+
+            foreach (Server s in res) {
+                s.settings = await _context.GetServerSettings(s.settingsID.Value);
+                s.admin = await _context.GetServerAdmins(s.serverName);
+                s.whitelist = await _context.GetServerWhitelist(s.serverName);
+            }
+
+            return Enumerable.Range(0, res.Count).Select(i => res[i]);
+        }
 
         [HttpGet("{serverName}/whitelist", Name = "GetWhitelist")]
-        public async Task<IEnumerable<User>> GetWhitelist(string serverName) {
-            List<User> res = await _context.GetServerWhitelist(serverName);
+        public async Task<IEnumerable<string>> GetWhitelist(string serverName) {
+            List<string> res = await _context.GetServerWhitelist(serverName);
 
             return Enumerable.Range(0, res.Count).Select(i => res[i]);
         }
@@ -64,6 +75,17 @@ namespace DBMicroservice.Controllers {
         [HttpPost("", Name = "InsertServer")]
         public async Task<IActionResult> InsertServer(Server server) {
             int res = await _context.InsertServer(server);
+
+            if (res == 1)
+                res = await _context.PatchServerSettings(server.serverName, server.settings);
+            if (res == 1)
+                foreach (string user in server.whitelist) {
+                    await _context.InsertServerWhitelist(user, server.serverName);
+                }
+            if (res == 1)
+                foreach (User user in server.admin) {
+                    await _context.InsertServerAdmin(user.username, server.serverName);
+                }
 
             if (res == 1)
                 return StatusCode(200, "Insert succesful!");
