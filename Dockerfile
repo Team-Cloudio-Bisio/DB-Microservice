@@ -6,7 +6,6 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-USER myLowPrivilegeUser
 WORKDIR /src
 COPY ["DBMicroservice.csproj", "./"]
 RUN dotnet restore "DBMicroservice.csproj"
@@ -15,7 +14,6 @@ WORKDIR "/src/"
 RUN dotnet build "DBMicroservice.csproj" -c Release -o /app/build
 
 FROM build AS publish
-USER myLowPrivilegeUser
 RUN dotnet publish "DBMicroservice.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
