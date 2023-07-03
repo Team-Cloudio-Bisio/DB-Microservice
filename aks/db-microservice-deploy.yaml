@@ -1,6 +1,5 @@
 apiVersion: apps/v1
 kind: Deployment
-automountServiceAccountToken: false
 metadata:
   name: dbmicroservice
   labels:
@@ -15,6 +14,7 @@ spec:
       labels:
         app: dbmicroservice
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: dbmicroservice-container
         image: federicoand98/db-microservice:latest
