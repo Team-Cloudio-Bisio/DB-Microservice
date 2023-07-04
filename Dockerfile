@@ -2,8 +2,10 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 RUN useradd myLowPrivilegeUser
 USER myLowPrivilegeUser
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 443
+
+ENV ASPNETCORE_URLS http://+:8000;https://+:8443
+EXPOSE 8000
+EXPOSE 8443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
