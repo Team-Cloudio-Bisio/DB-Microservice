@@ -18,17 +18,16 @@ spec:
       containers:
       - name: dbmicroservice-container
         image: federicoand98/db-microservice:latest
-        # securityContext:
-        #   runAsUser: 999
-        #   readOnlyRootFilesystem: true
-        #   runAsNonRoot: true
-        #   allowPrivilegeEscalation: false
+        securityContext:
+          runAsUser: 999
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
           - name: ASPNETCORE_ENVIRONMENT
-            value: Development
+            value: Production
           - name: ConnectionStrings__DefaultConnection
             valueFrom:
               secretKeyRef:
