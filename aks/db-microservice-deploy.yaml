@@ -18,11 +18,11 @@ spec:
       containers:
       - name: dbmicroservice-container
         image: federicoand98/db-microservice:latest
-        securityContext:
-          runAsUser: 999
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          allowPrivilegeEscalation: false
+        # securityContext:
+        #   runAsUser: 999
+        #   readOnlyRootFilesystem: true
+        #   runAsNonRoot: true
+        #   allowPrivilegeEscalation: false
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
