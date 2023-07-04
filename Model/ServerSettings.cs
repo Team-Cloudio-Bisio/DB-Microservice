@@ -20,7 +20,7 @@ namespace DBMicroservice.Model {
 
         // create with preset settings
         public ServerSettings() {
-            seed = RandomNumberGenerator.GetInt32(Int32.MaxValue);
+            seed = RandomNumberGenerator.GetInt32(48);
             maxPlayers = 4;
             difficulty = Difficulty.easy;
             gamemode = Gamemode.survival;
