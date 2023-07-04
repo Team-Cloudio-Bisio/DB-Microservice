@@ -36,8 +36,8 @@ spec:
                 key: CS_DefaultConnection
         resources:
           requests:
-            memory: "64Mi"
+            memory: "256Mi"
             cpu: "0.1"
           limits:
-            memory: "128Mi"
+            memory: "512Mi"
             cpu: "0.3"
