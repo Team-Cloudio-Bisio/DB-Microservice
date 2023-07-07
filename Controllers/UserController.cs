@@ -25,7 +25,7 @@ namespace DBMicroservice.Controllers {
             logger.Log(LogLevel.Information, "Started User Controller");
 
             string connstring = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
-            
+
             _context = new DBUserContext(connstring);
         }
 

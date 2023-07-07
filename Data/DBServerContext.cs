@@ -101,13 +101,13 @@ namespace DBMicroservice.Data {
         
         public async Task<int> DeleteServer(string serverName) {
             int rowsAffected = - 1;
-            SqlConnection connection = _connection.GetConnection();
             Guid? id = null;
-            
             
             // due to dependencies we need to delete this lists before
             DeleteAllAdmins(serverName);
             DeleteAllWhitelist(serverName);
+            
+            SqlConnection connection = _connection.GetConnection();
 
             // get settingsID in order to delete it after we delete the server (as we cannot do it before)
             string query1 = "SELECT settingsID FROM myServer WHERE serverName = @ServerName";
@@ -323,10 +323,10 @@ namespace DBMicroservice.Data {
             }
 
             if (rowsAffected == 1) {
-                string query2 = "UPDATE myServer SET settingsId = @NewValue WHERE serverName = @SeverId";
+                string query2 = "UPDATE myServer SET settingsId = @NewValue WHERE serverName = @SeverName";
                 using (SqlCommand command = new SqlCommand(query2, connection)) {
                     command.Parameters.AddWithValue("@NewValue", generatedID);
-                    command.Parameters.AddWithValue("@SeverId", serverName);
+                    command.Parameters.AddWithValue("@SeverName", serverName);
 
                     rowsAffected = command.ExecuteNonQuery();
                 }
@@ -376,7 +376,6 @@ namespace DBMicroservice.Data {
         private async Task<int> DeleteServerSettings(Guid? settingsID) {
             int rowsAffected = - 1;
             
-           
             string query = "DELETE FROM myServerSettings WHERE (settingsID=@Value)";
             using (SqlCommand command = new SqlCommand(query, _connection.GetConnection())) {
                 command.Parameters.AddWithValue("@Value", settingsID);
@@ -392,7 +391,7 @@ namespace DBMicroservice.Data {
         private async Task<int> DeleteAllAdmins(string serverName) {
             int rowsAffected = - 1;
             
-            string query = "DELETE FROM myServerAdmin WHERE serverName=@Value";
+            string query = "DELETE FROM myServerAdmin WHERE (serverName=@Value)";
             using (SqlCommand command = new SqlCommand(query, _connection.GetConnection())) {
                 command.Parameters.AddWithValue("@Value", serverName);
 
@@ -406,7 +405,7 @@ namespace DBMicroservice.Data {
         private async Task<int> DeleteAllWhitelist(string serverName) {
             int rowsAffected = - 1;
             
-            string query = "DELETE FROM myServerWhitelist WHERE serverName=@Value";
+            string query = "DELETE FROM myServerWhitelist WHERE (serverName=@Value)";
             using (SqlCommand command = new SqlCommand(query, _connection.GetConnection())) {
                 command.Parameters.AddWithValue("@Value", serverName);
 
